@@ -1,19 +1,23 @@
 <img src="img/ifsc-logo.png"
      width="30%"
-     style="padding: 10px">
+     style="padding: 10px"
+     alt="">
+# SEMA - Sistema de Estação de Monitoramento da Água
 
-# << Título do projeto >>
+### Gerenciar dados obtidos de uma estação de monitoramento remoto de qualidade da água.
 
-## << Descrição breve do domínio do problema >>
-
-> Repositório destinado para o desenvolvimento do projeto final da discipliana PRG22107 - Programação orienta a objeto. 
+*Repositório destinado para o desenvolvimento do projeto final da discipliana PRG22107 - Programação orienta a objeto.* 
 > 
-> Aluno: Nome do aluno  
+> Aluno: Pedro Henrique Daguer  
 > Professor: Hugo Marcondes
+
+#
 
 <p align=center><strong>SUMÁRIO</strong></p>
 
-[**1. ANÁLISE ORIENTADA A OBJETO**](./analise.md)<br>
-[**2. PROJETO ORIENTADO A OBJETO**](./projeto.md)<br>
-[**3. IMPLEMENTAÇÃO (C++)**](./implementacao.md)<br>
-[**4. TESTES**](./testes.md)<br>
+[**1. ANÁLISE ORIENTADA A OBJETO**](.mds/sema.md)<br>
+[**2. PROJETO ORIENTADO A OBJETO**](.mds/projeto.md)<br>
+[**3. IMPLEMENTAÇÃO (C++)**](.mds/implementacao.md)<br>
+[**4. TESTES**](.mds/testes.md)<br>
+
+#
