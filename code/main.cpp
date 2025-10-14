@@ -50,9 +50,8 @@ public:
         file.write(brokerAddr.c_str(), sizeof(char) * len);
 
         // Write registered station's ID.
-        if (!stations.empty())
-            for (auto &station : stations)
-                file.write(reinterpret_cast<char *>(&station), sizeof(station));
+        for (auto &station : stations)
+            file.write(reinterpret_cast<char *>(&station), sizeof(station));
     };
 
     void load()
@@ -70,6 +69,18 @@ public:
 
         // Dump payload into brokerAddr;
         brokerAddr.assign(buffer.data(), chars);
+        if (file.tellg() == fileSize())
+        {
+            printf_s("[SETTINGS] No stations found in settings file.\n");
+            return;
+        }
+
+        while (file.tellg() != fileSize())
+        {
+            unsigned id;
+            file.read(reinterpret_cast<char *>(&id), sizeof(id));
+            stations.push_back(id);
+        }
     };
 
     void close()
@@ -109,13 +120,19 @@ int main()
     Settings settings;
     if (settings.isFileEmpty())
     {
-        //TODO: Configurar via UI;
-        printf_s("Configuração em branco.\n");
+        // TODO: Configurar via UI;
+        printf_s("[SETTINGS] Empty settings file.\n");
         settings.brokerAddr = "teste";
+        settings.stations.push_back(1);
+        settings.stations.push_back(2);
+        settings.stations.push_back(3);
         settings.save();
+        printf_s("[SETTINGS] Saved sample settings.\n");
     }
 
     settings.load();
-    printf_s("BROKER ADDR: %s\n", settings.brokerAddr.c_str());
+    printf_s("- BROKER ADDR: %s\n", settings.brokerAddr.c_str());
+    for (auto &s : settings.stations)
+        printf_s("- Found station: %i\n", s);
     settings.close();
 }
