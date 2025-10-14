@@ -18,6 +18,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 FILE(GLOB_RECURSE SOURCES "code/*.cpp")
 add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "code/")
 
 #target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Mqtt)
 #set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES

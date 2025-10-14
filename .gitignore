@@ -1,3 +1,5 @@
+*.sema
+
 # Visual Paradigm
 **.vpp.bak*
 
