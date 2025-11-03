@@ -5,7 +5,7 @@ int main()
     Settings settings;
     if (settings.isFileEmpty())
     {
-        // TODO: Configurar via UI;
+        // TODO: Configurar via UI QT;
         printf_s("[SETTINGS] Empty settings file.\n");
         settings.brokerAddr = "teste";
         settings.stations.push_back(1);

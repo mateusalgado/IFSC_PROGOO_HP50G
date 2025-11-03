@@ -1,15 +1,19 @@
+//TODO: Move impls to .cpp file
+
 #pragma once
 
 #include <iostream>
 #include <fstream>
 #include <vector>
 
+/// @brief Settings file manager.
 class Settings
 {
 public:
+    /// @brief Create and open settings file.
     Settings()
     {
-        // Create file if does not exist.
+        // Assert file exists.
         file.open("settings.sema", std::ios::binary | std::ios::in | std::ios::out | std::ios::app);
         if (!file.is_open())
         {
@@ -18,15 +22,18 @@ public:
         }
         file.close();
 
-        // Open with read & write at any pos.
+        // Open file with seek permission.
         file.open("settings.sema", std::ios::binary | std::ios::in | std::ios::out);
         if (!file.is_open())
         {
             printf_s("Falha ao abrir/criar configurações.\n");
             return;
         }
+
+        stations.clear();
     };
 
+    /// @brief Save brokerAddr & stationsIDs.
     void save()
     {
         // Move to the beginning  of the file.
@@ -44,6 +51,7 @@ public:
             file.write(reinterpret_cast<char *>(&station), sizeof(station));
     };
 
+    /// @brief Load settings file into memory.
     void load()
     {
         // Move to the beginning  of the file.
@@ -65,6 +73,7 @@ public:
             return;
         }
 
+        stations.clear();
         while (file.tellg() != fileSize())
         {
             unsigned id;
@@ -73,12 +82,16 @@ public:
         }
     };
 
+    /// @brief Close settinsg file WITHOUT saving.
     void close()
     {
         file.close();
     }
 
+    /// @brief MQTT Broker Addr
     std::string brokerAddr;
+
+    /// @brief Stations ID.
     std::vector<unsigned> stations;
 
     bool isFileEmpty()
@@ -91,7 +104,7 @@ private:
     {
         // Save cur pos;
         auto fpos = file.tellg();
-        // Goto end of file;
+        // Go to end of file;
         file.seekg(0, std::ios::end);
         // Read pos;
         std::streampos s = file.tellg();
@@ -102,5 +115,4 @@ private:
 
     std::fstream file;
 
-private:
 };
