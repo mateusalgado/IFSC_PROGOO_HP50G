@@ -16,7 +16,9 @@ O SEMA é um sistema desenvolvido em C++ que utiliza o framework QT e o protocol
 </div>
 
 # Diagrama de classes
-[TODO]
+<div align=center>
+<a href=./sema.md><img src="../img/classes.jpg" alt="classes"></a>
+</div>
 
 # Diagrama de interação
 [TODO]
