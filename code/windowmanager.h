@@ -1,16 +1,15 @@
-#ifndef SEMA_WINMAN_H
-#define SEMA_WINMAN_H
-
-#include <QWidget>
-
-class WindowManager : public QWidget
+#pragma once
+class WindowManager
 {
-    Q_OBJECT
 
 public:
-    WindowManager(QWidget *parent = nullptr);
+    WindowManager();
     ~WindowManager();
 
+    void showEntryWindow();
+    void showSettingsWindow();
+    void showDataViewWindow();
+    void showDataExportWindow();
 private:
 };
-#endif // SEMA_WINMAN_H
+
