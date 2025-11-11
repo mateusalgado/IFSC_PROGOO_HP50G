@@ -1,26 +1,42 @@
-cmake_minimum_required(VERSION 3.16)
-
-project(Sema VERSION 1.0.0 LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.19)
+project(Sema LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-#set(CMAKE_PREFIX_PATH C:/Qt/6.10.0/mingw_64)
-#find_package(Qt6 REQUIRED COMPONENTS Mqtt)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Graphs Mqtt Sql)
 
-#qt_standard_project_setup()
+qt_standard_project_setup()
 
-#qt_add_executable(${CMAKE_PROJECT_NAME}
-#code/main.cpp
-#)
+qt_add_executable(Sema
+    WIN32 MACOSX_BUNDLE
+    code/main.cpp
+    code/windowmanager.cpp
+    code/windowmanager.h
+    code/settings.hpp
+)
 
-FILE(GLOB_RECURSE SOURCES "code/*.cpp")
-add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "code/")
+target_link_libraries(Sema
+    PRIVATE
+        Qt::Core
+        Qt::Widgets
+        Qt::Graphs
+        Qt::Mqtt
+)
 
-#target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt6::Mqtt)
-#set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
-#    WIN32_EXECUTABLE ON
-#)
+include(GNUInstallDirs)
+
+install(TARGETS Sema
+    BUNDLE  DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
+
+qt_generate_deploy_app_script(
+    TARGET Sema
+    OUTPUT_SCRIPT deploy_script
+    NO_UNSUPPORTED_PLATFORM_ERROR
+)
+install(SCRIPT ${deploy_script})
