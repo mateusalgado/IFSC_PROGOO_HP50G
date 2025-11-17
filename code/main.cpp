@@ -1,13 +1,12 @@
-#include "windowmanager.h"
-
 #include <QApplication>
+#include "settingswin.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    WindowManager winManager;
-    winManager.showEntryWindow();
+    SettingsWin settingsWin;
+    settingsWin.show();
 
     return app.exec();
 }
