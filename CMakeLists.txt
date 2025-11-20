@@ -7,7 +7,6 @@ set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Graphs Mqtt Sql)
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 qt_standard_project_setup()
 
@@ -16,8 +15,9 @@ qt_add_executable(Sema
     code/main.cpp
 
 
-    code/settings.hpp
+
     code/settingswin.h code/settingswin.cpp
+    code/database.h code/database.cpp
 )
 
 target_link_libraries(Sema
@@ -26,8 +26,8 @@ target_link_libraries(Sema
         Qt::Widgets
         Qt::Graphs
         Qt::Mqtt
+        Qt::Sql
 )
-target_link_libraries(Sema PRIVATE Qt6::Widgets)
 
 include(GNUInstallDirs)
 

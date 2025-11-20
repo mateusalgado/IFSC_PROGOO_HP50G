@@ -7,16 +7,21 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QMessageBox>
+
+#include "database.h"
 
 class SettingsWin : QObject
 {
 public:
-    SettingsWin();
+    SettingsWin(Database* db);
 
     void show();
     void save();
 
 private:
+    Database* m_settingsDb;
+
     QWidget* m_settingsWin;
 
     QVBoxLayout* m_mainlay;

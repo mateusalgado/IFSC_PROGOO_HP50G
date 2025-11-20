@@ -1,7 +1,7 @@
 #include "settingswin.h"
 
 
-SettingsWin::SettingsWin()
+SettingsWin::SettingsWin(Database* db) : m_settingsDb(db)
 {
     //Construtores
     m_settingsWin = new QWidget();
@@ -48,7 +48,7 @@ SettingsWin::SettingsWin()
     //Janela
     m_settingsWin->setWindowTitle("Configurações");
     m_settingsWin->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    m_settingsWin->setFixedSize(m_settingsWin->sizeHint());
+    m_settingsWin->setFixedSize(m_settingsWin->sizeHint().width() + 200, m_settingsWin->sizeHint().height());
 }
 
 void SettingsWin::show()
@@ -60,6 +60,21 @@ void SettingsWin::show()
 
 void SettingsWin::save()
 {
-    QLabel* label = new QLabel("Teste");
-    label->show();
+    QString broker = m_brokerAddrInput->text().trimmed();
+    QString topic  = m_mqttTopicInput->text().trimmed();
+
+    if (broker.isEmpty() || topic.isEmpty()) {
+        QMessageBox::warning(m_settingsWin,
+                             "Campos vazios",
+                             "Preencha todos os campos antes de salvar.");
+        return;
+    }
+
+    m_settingsDb->writeSettings(broker, topic);
+
+    QMessageBox::information(m_settingsWin,
+                             "Configurações",
+                             "Configurações salvas com sucesso.");
+
+    m_settingsWin->close();
 }
