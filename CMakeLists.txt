@@ -29,6 +29,9 @@ qt_add_executable(Sema
     resources.qrc
     code/widgets/customchart.h
     code/widgets/customlabel.h
+    code/widgets/custombutton.h
+
+
 )
 
 target_link_libraries(Sema

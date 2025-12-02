@@ -11,8 +11,9 @@
 
 class CustomChart : public QStackedLayout
 {
+    Q_OBJECT
 public:
-    CustomChart(QString iconPath, int iconW, int iconH) : QStackedLayout()
+    CustomChart(QString iconPath, int iconW, int iconH)
     {
         icon = new QIcon(iconPath);
         label = new QLabel();

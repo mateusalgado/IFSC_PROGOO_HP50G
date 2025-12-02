@@ -4,14 +4,19 @@
 #include "settings/settingswin.h"
 #include "dashboard/dashboardwin.h"
 
-class WinManager
+#include <QObject>
+
+class WinManager : QObject
 {
+    Q_OBJECT
 public:
     WinManager();
 
     void showSettings();
     void showDashboard();
     void showDataExport();
+
+    void createSignals();
 
 private:
     SettingsWin m_settingsWin;

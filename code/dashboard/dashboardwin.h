@@ -5,34 +5,38 @@
 #include <QGridLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QChartView>
 #include <QSize>
-#include <QDebug>
 
 #include "../widgets/customchart.h"
 #include "../widgets/customlabel.h"
+#include "../widgets/custombutton.h"
 
 class DashboardWin : public QWidget
 {
     Q_OBJECT
 public:
     explicit DashboardWin(QWidget *parent = nullptr);
+
+    CustomLabel<int>* lOnlineCount;
+    CustomLabel<float>* lAvgAirTemp;
+    CustomLabel<float>* lAvgAirHum;
+    CustomLabel<float>* lAvgWaterTemp;
+    CustomLabel<int>* lAvgUV;
+
+    CustomChart* cAirTemp;
+    CustomChart* cAirHum;
+    CustomChart* cWaterTemp;
+    CustomChart* cUV;
+
+    CustomButton* bSettings;
+    CustomButton* bData;
+
 private:
-    CustomLabel<int>* m_lOnlineCount;
-    CustomLabel<float>* m_lAvgAirTemp;
-    CustomLabel<float>* m_lAvgAirHum;
-    CustomLabel<float>* m_lAvgWaterTemp;
-    CustomLabel<int>* m_lAvgUV;
-
-    CustomChart* m_gAirTemp;
-    CustomChart* m_gAirHum;
-    CustomChart* m_gWaterTemp;
-    CustomChart* m_gUV;
-
     QGridLayout* m_chartsLayout;
     QVBoxLayout* m_labelsLayout;
     QHBoxLayout* m_dataLayout;
 
+    void createButtons();
     void createLabels();
     void createCharts();
     void createLayouts();
