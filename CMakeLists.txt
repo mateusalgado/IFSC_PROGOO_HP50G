@@ -6,28 +6,35 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 23)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Graphs Mqtt Sql)
+set(CMAKE_AUTORCC ON)
+
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Charts Mqtt Sql)
+find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
 qt_standard_project_setup()
 
 qt_add_executable(Sema
     WIN32 MACOSX_BUNDLE
     code/main.cpp
-
-
-
-    code/settingswin.h code/settingswin.cpp
+    code/settingsmanager.h code/settingsmanager.cpp
     code/database.h code/database.cpp
+    code/winmanager.h code/winmanager.cpp
+    code/settingswin.h code/settingswin.cpp
+    code/dashboardwin.h code/dashboardwin.cpp
+    code/resources.qrc
+    code/customchart.h
+    code/customlabel.h
 )
 
 target_link_libraries(Sema
     PRIVATE
         Qt::Core
         Qt::Widgets
-        Qt::Graphs
+        Qt::Charts
         Qt::Mqtt
         Qt::Sql
 )
+target_link_libraries(Sema PRIVATE Qt6::Widgets)
 
 include(GNUInstallDirs)
 

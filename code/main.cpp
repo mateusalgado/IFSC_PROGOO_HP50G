@@ -1,18 +1,12 @@
 #include <QApplication>
-#include "settingswin.h"
-#include "database.h"
+#include "winmanager.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    Database db;
-    SettingsWin settingsWin(&db);
-
-    if(db.isSettingsEmpty())
-    {
-        settingsWin.show();
-    };
+    WinManager winManager;
+    winManager.showDashboard();
 
     return app.exec();
 }
