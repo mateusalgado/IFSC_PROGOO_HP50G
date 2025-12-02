@@ -8,6 +8,7 @@
 #include <QHBoxLayout>
 #include <QBoxLayout>
 #include <QVariant>
+
 template<typename T>
 class CustomLabel : public QWidget
 {

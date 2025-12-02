@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/connection.png</file>
+        <file>img/database.png</file>
+        <file>img/humidity.png</file>
+        <file>img/settings.png</file>
+        <file>img/temperature.png</file>
+        <file>img/uv.png</file>
+        <file>img/water.png</file>
+    </qresource>
+</RCC>

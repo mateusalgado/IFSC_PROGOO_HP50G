@@ -10,7 +10,6 @@
 #include <QSqlQuery>
 #include <QString>
 
-
 class Database
 {
 private:

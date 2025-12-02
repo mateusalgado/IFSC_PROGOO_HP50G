@@ -1,8 +1,8 @@
 #ifndef WINMANAGER_H
 #define WINMANAGER_H
 
-#include "settingswin.h"
-#include "dashboardwin.h"
+#include "settings/settingswin.h"
+#include "dashboard/dashboardwin.h"
 
 class WinManager
 {

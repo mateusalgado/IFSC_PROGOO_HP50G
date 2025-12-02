@@ -9,8 +9,8 @@
 #include <QSize>
 #include <QDebug>
 
-#include "customchart.h"
-#include "customlabel.h"
+#include "../widgets/customchart.h"
+#include "../widgets/customlabel.h"
 
 class DashboardWin : public QWidget
 {

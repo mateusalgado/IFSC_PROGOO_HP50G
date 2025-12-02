@@ -23,10 +23,10 @@ void DashboardWin::createLabels()
 
 void DashboardWin::createCharts()
 {
-    m_gAirTemp = new CustomChart("://temperature.png", 20, 20);
-    m_gAirHum = new CustomChart("://humidity.png", 20, 20);
-    m_gWaterTemp = new CustomChart("://water.png", 20, 20);
-    m_gUV = new CustomChart("://uv.png", 20, 20);
+    m_gAirTemp = new CustomChart("://img/temperature.png", 20, 20);
+    m_gAirHum = new CustomChart("://img/humidity.png", 20, 20);
+    m_gWaterTemp = new CustomChart("://img/water.png", 20, 20);
+    m_gUV = new CustomChart("://img/uv.png", 20, 20);
 }
 
 void DashboardWin::createLayouts()

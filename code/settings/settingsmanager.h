@@ -9,7 +9,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 
-#include "database.h"
+#include "../data/database.h"
 
 class SettingsManager : QObject
 {
