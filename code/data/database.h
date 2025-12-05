@@ -10,9 +10,12 @@
 #include <QSqlQuery>
 #include <QString>
 #include <QMessageBox>
+#include <QObject>
+#include "../settings/settingswin.h"
 
-class Database
+class Database : public QObject
 {
+    Q_OBJECT
 private:
     QSqlDatabase m_db;
 
@@ -22,9 +25,13 @@ private:
     void m_criarTabelaSettings();
     void m_criarTabelaDados();
 
-    void m_showWarning(QString title, QString message);
+    void m_setSetting(const QString &key, const QString &value);
 public:
     Database();
+    SettingsData getSettings();
+
+public slots:
+    void saveSettings(const SettingsData& data);
 };
 
 #endif // DATABASE_H

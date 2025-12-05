@@ -18,6 +18,7 @@ public:
     void showDataExport();
 
     void createSignals();
+
 private:
     SettingsWin* m_settingsWin;
     DashboardWin* m_dashboardWin;

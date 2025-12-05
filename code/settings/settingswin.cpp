@@ -6,6 +6,15 @@ SettingsWin::SettingsWin(QWidget *parent)
     createButtons();
     createInputs();
     createLayout();
+
+    connect(bSave, &QPushButton::clicked, this, &SettingsWin::onSaveClicked);
+}
+
+void SettingsWin::loadSettings(const SettingsData &data)
+{
+    lAddr->setText(data.brokerAddr);
+    lPort->setText(QString::number(data.brokerPort));
+    cSaveData->setChecked(data.saveData);
 }
 
 void SettingsWin::createButtons()
@@ -20,6 +29,7 @@ void SettingsWin::createInputs()
     lAddr->setPlaceholderText("Endereço Broker MQTT");
 
     lPort =new QLineEdit();
+    lPort->setValidator(new QIntValidator(0, 9999, this));
     lPort->setPlaceholderText("Porta Broker MQTT");
 }
 
@@ -39,3 +49,30 @@ void SettingsWin::createLayout()
     setWindowTitle("Configurações");
     setFixedSize(sizeHint());
 }
+
+void SettingsWin::onSaveClicked()
+{
+    bool ok;
+    int port = lPort->text().toInt(&ok);
+
+    if (!ok || port < 1 || port > 65535) {
+        QMessageBox::warning(this, "Porta inválida",
+                             "Insira uma porta válida entre 1 e 65535.");
+        return;
+    }
+
+    if (lAddr->text().isEmpty()) {
+        QMessageBox::warning(this, "Endereço vazio",
+                             "O endereço do broker não pode estar vazio.");
+        return;
+    }
+
+    SettingsData data;
+    data.brokerAddr = lAddr->text();
+    data.brokerPort = port;
+    data.saveData   = cSaveData->isChecked();
+
+    emit settingsChanged(data);
+    close();
+}
+
