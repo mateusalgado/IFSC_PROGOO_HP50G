@@ -29,6 +29,9 @@ public:
         label->setContentsMargins(15, 15, 0, 0);
 
         view = new QChartView();
+        view->layout()->setContentsMargins(0, 0, 0, 0);
+        view->setContentsMargins(0,0,0,0);
+
         addWidget(view);
         addWidget(label);
         setStackingMode(QStackedLayout::StackAll);

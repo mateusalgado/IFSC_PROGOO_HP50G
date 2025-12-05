@@ -46,6 +46,11 @@ void DashboardWin::createCharts()
 
 void DashboardWin::createLayouts()
 {
+    //Layout para o botão de exportar e configurar
+    m_buttonsLayout = new QVBoxLayout();
+    m_buttonsLayout->addWidget(bData);
+    m_buttonsLayout->addWidget(bSettings);
+    m_buttonsLayout->setAlignment(Qt::AlignBottom);
 
     //Layout para os dados médios e botões
     m_labelsLayout = new QVBoxLayout();
@@ -54,10 +59,11 @@ void DashboardWin::createLayouts()
     m_labelsLayout->addWidget(lAvgAirTemp);
     m_labelsLayout->addWidget(lAvgUV);
     m_labelsLayout->addWidget(lAvgWaterTemp);
-    m_labelsLayout->addWidget(bData);
-    m_labelsLayout->addWidget(bSettings);
-    m_labelsLayout->setAlignment(Qt::AlignTop);
-    m_labelsLayout->setSpacing(25);
+
+    //Layout para separar labels de buttons
+    m_labelsandButtonsLayout = new QVBoxLayout();
+    m_labelsandButtonsLayout->addLayout(m_labelsLayout);
+    m_labelsandButtonsLayout->addLayout(m_buttonsLayout);
 
     //Layout em grid para os gráficos
     m_chartsLayout = new QGridLayout();
@@ -65,10 +71,14 @@ void DashboardWin::createLayouts()
     m_chartsLayout->addLayout(cAirTemp, 0, 1);
     m_chartsLayout->addLayout(cUV, 1, 0);
     m_chartsLayout->addLayout(cWaterTemp, 1, 1);
+    m_chartsLayout->setSpacing(0);
+    m_chartsLayout->setHorizontalSpacing(0);
+    m_chartsLayout->setVerticalSpacing(0);
+    m_chartsLayout->setContentsMargins(0, 0, 0, 0);
 
     //Separa o layout dos dados médios VS layout dos gráficos
     m_dataLayout = new QHBoxLayout();
-    m_dataLayout->addLayout(m_labelsLayout);
+    m_dataLayout->addLayout(m_labelsandButtonsLayout);
     m_dataLayout->addLayout(m_chartsLayout);
     m_dataLayout->setAlignment(Qt::AlignCenter | Qt::AlignHCenter | Qt::AlignVCenter);
     this->setLayout(m_dataLayout);

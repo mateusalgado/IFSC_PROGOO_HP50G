@@ -31,6 +31,7 @@ void Database::m_criarTabelaSettings()
     QTableView *settingsView = new QTableView;
     settingsView->setModel(m_settingsTable);
     settingsView->setWindowTitle("Tabela Settings");
+    settingsView->setWindowIcon(QIcon("://img/settings.png"));
     settingsView->show();
 }
 
@@ -53,6 +54,7 @@ void Database::m_criarTabelaDados()
     QTableView *dataView = new QTableView;
     dataView->setModel(m_dataTable);
     dataView->setWindowTitle("Tabela Dados");
+    dataView->setWindowIcon(QIcon("://img/database.png"));
     dataView->show();
 }
 

@@ -31,13 +31,15 @@ public:
 
     CustomButton* bSettings;
     CustomButton* bData;
-
 protected:
     void closeEvent(QCloseEvent *event) override;
 
 private:
     QGridLayout* m_chartsLayout;
+    QVBoxLayout* m_labelsandButtonsLayout;
     QVBoxLayout* m_labelsLayout;
+    QVBoxLayout* m_buttonsLayout;
+
     QHBoxLayout* m_dataLayout;
 
     void createButtons();

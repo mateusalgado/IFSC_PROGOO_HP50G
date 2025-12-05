@@ -43,11 +43,9 @@ void SettingsWin::createLayout()
     layout->addWidget(bSave);
 
     setLayout(layout);
-
-    icon = new QIcon("://img/settings.png");
-    setWindowIcon(*icon);
+    setWindowIcon(QIcon("://img/settings.png"));
     setWindowTitle("Configurações");
-    setFixedSize(sizeHint());
+    setFixedSize(sizeHint().width() + 100, sizeHint().height());
 }
 
 void SettingsWin::onSaveClicked()
