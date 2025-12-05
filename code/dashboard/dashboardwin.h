@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QSize>
+#include <QApplication>
 
 #include "../widgets/customchart.h"
 #include "../widgets/customlabel.h"
@@ -30,6 +31,9 @@ public:
 
     CustomButton* bSettings;
     CustomButton* bData;
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     QGridLayout* m_chartsLayout;

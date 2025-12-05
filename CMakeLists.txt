@@ -16,8 +16,6 @@ qt_standard_project_setup()
 qt_add_executable(Sema
     WIN32 MACOSX_BUNDLE
     code/main.cpp
-    code/settings/settingsmanager.h
-    code/settings/settingsmanager.cpp
     code/data/database.h
     code/data/database.cpp
     code/winmanager.h
@@ -30,8 +28,6 @@ qt_add_executable(Sema
     code/widgets/customchart.h
     code/widgets/customlabel.h
     code/widgets/custombutton.h
-
-
 )
 
 target_link_libraries(Sema

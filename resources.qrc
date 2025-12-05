@@ -2,10 +2,9 @@
     <qresource prefix="/">
         <file>img/connection.png</file>
         <file>img/database.png</file>
-        <file>img/humidity.png</file>
         <file>img/settings.png</file>
-        <file>img/temperature.png</file>
-        <file>img/uv.png</file>
-        <file>img/water.png</file>
+        <file>img/save.png</file>
+        <file>img/sema.png</file>
+        <file>img/sema.ico</file>
     </qresource>
 </RCC>

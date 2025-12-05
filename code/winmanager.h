@@ -3,13 +3,14 @@
 
 #include "settings/settingswin.h"
 #include "dashboard/dashboardwin.h"
+#include "data/database.h"
 
 #include <QObject>
 
-class WinManager : QObject
+class WinManager
 {
-    Q_OBJECT
 public:
+    Database* database;
     WinManager();
 
     void showSettings();
@@ -17,10 +18,9 @@ public:
     void showDataExport();
 
     void createSignals();
-
 private:
-    SettingsWin m_settingsWin;
-    DashboardWin m_dashboardWin;
+    SettingsWin* m_settingsWin;
+    DashboardWin* m_dashboardWin;
 };
 
 #endif // WINMANAGER_H

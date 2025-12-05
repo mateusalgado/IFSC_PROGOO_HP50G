@@ -9,12 +9,20 @@ DashboardWin::DashboardWin(QWidget *parent)
     createLayouts();
 
     resize(800, 600);
+
+    setWindowIcon(QIcon("://img/sema.png"));
+}
+
+void DashboardWin::closeEvent(QCloseEvent *event)
+{
+    QApplication::quit();
+    event->accept();
 }
 
 void DashboardWin::createButtons()
 {
-    bSettings = new CustomButton("Configurar", "://img/settings.png", 32, 32);
-    bData = new CustomButton("Exportar", "://img/database.png", 32, 32);
+    bSettings = new CustomButton(" Configurar", "://img/settings.png", 22, 22);
+    bData = new CustomButton(" Exportar", "://img/database.png", 22, 22);
 }
 
 void DashboardWin::createLabels()
@@ -30,10 +38,10 @@ void DashboardWin::createLabels()
 
 void DashboardWin::createCharts()
 {
-    cAirTemp = new CustomChart("://img/temperature.png", 20, 20);
-    cAirHum = new CustomChart("://img/humidity.png", 20, 20);
-    cWaterTemp = new CustomChart("://img/water.png", 20, 20);
-    cUV = new CustomChart("://img/uv.png", 20, 20);
+    cAirTemp = new CustomChart();
+    cAirHum = new CustomChart();
+    cWaterTemp = new CustomChart();
+    cUV = new CustomChart();
 }
 
 void DashboardWin::createLayouts()

@@ -13,6 +13,12 @@ class CustomChart : public QStackedLayout
 {
     Q_OBJECT
 public:
+    CustomChart()
+    {
+        view = new QChartView();
+        addWidget(view);
+    }
+
     CustomChart(QString iconPath, int iconW, int iconH)
     {
         icon = new QIcon(iconPath);

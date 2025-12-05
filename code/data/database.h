@@ -9,21 +9,22 @@
 #include <QTableView>
 #include <QSqlQuery>
 #include <QString>
+#include <QMessageBox>
 
 class Database
 {
 private:
-    QSqlDatabase db;
-    QSqlTableModel* settingsTable;
-    QSqlTableModel* dataTable;
+    QSqlDatabase m_db;
 
-    bool m_settingsEmpty;
+    QSqlTableModel* m_settingsTable;
+    QSqlTableModel* m_dataTable;
+
+    void m_criarTabelaSettings();
+    void m_criarTabelaDados();
+
+    void m_showWarning(QString title, QString message);
 public:
     Database();
-
-    bool isSettingsEmpty();
-
-    void writeSettings(QString brokerAddr, QString mqttTopic);
 };
 
 #endif // DATABASE_H

@@ -1,58 +1,68 @@
 #include "database.h"
-#include <QDebug>
+
+void Database::m_criarTabelaSettings()
+{
+    QSqlQuery query;
+    if (!query.exec("CREATE TABLE IF NOT EXISTS settings ("
+                    "broker_addr TEXT, "
+                    "broker_port INTEGER,"
+                    "save_data BOOL)")) {
+        m_showWarning("Erro ao criar tabela settings", query.lastError().text());
+    }
+
+    m_settingsTable = new QSqlTableModel();
+    m_settingsTable->setTable("settings");
+    m_settingsTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    m_settingsTable->select();
+
+    QTableView *settingsView = new QTableView;
+    settingsView->setModel(m_settingsTable);
+    settingsView->setWindowTitle("Tabela Settings");
+    settingsView->show();
+}
+
+void Database::m_criarTabelaDados()
+{
+    QSqlQuery query;
+
+    if (!query.exec("CREATE TABLE IF NOT EXISTS data ("
+                    "time_stamp TEXT, "
+                    "station_name TEXT, "
+                    "data TEXT)")) {
+        m_showWarning("Erro ao criar tabela data", query.lastError().text());
+    }
+
+    m_dataTable= new QSqlTableModel();
+    m_dataTable->setTable("data");
+    m_dataTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    m_dataTable->select();
+
+    QTableView *dataView = new QTableView;
+    dataView->setModel(m_dataTable);
+    dataView->setWindowTitle("Tabela Dados");
+    dataView->show();
+}
+
+
+void Database::m_showWarning(QString title, QString message)
+{
+    QMessageBox warning;
+    warning.setWindowTitle(title);
+    warning.setText(message);
+    warning.setDefaultButton(QMessageBox::Ok);
+    warning.exec();
+}
 
 Database::Database()
 {
-    db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("sema.db");
+    m_db = QSqlDatabase::addDatabase("QSQLITE");
+    m_db.setDatabaseName("sema.db");
 
-    if (!db.open()) {
-        qDebug() << "Erro ao abrir db:" << db.lastError().text();
+    if (!m_db.open()) {
+        m_showWarning("Erro ao abrir banco de dados", m_db.lastError().text());
         return;
     }
 
-    QSqlQuery query;
-    if (!query.exec(
-            "CREATE TABLE IF NOT EXISTS settings ("
-            "brokerAddr TEXT NOT NULL,"
-            "mqttTopic  TEXT NOT NULL)"
-            )) {
-        qDebug() << "Erro ao criar tabela settings:" << query.lastError();
-    }
-
-    settingsTable = new QSqlTableModel();
-    settingsTable->setTable("settings");
-    settingsTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    settingsTable->select();
-
-    m_settingsEmpty = settingsTable->rowCount() == 0;
-
-    QTableView *view = new QTableView;
-    view->setModel(settingsTable);
-    view->show();
-}
-
-
-bool Database::isSettingsEmpty()
-{
-    return this->m_settingsEmpty;
-}
-
-void Database::writeSettings(QString brokerAddr, QString mqttTopic)
-{
-    auto record = settingsTable->record(0);
-    record.setValue("brokerAddr", brokerAddr);
-    record.setValue("mqttTopic", mqttTopic);
-
-    if (!settingsTable->insertRecord(0, record)) {
-        qDebug() << "Erro ao gravar configurações:" << settingsTable->lastError().text();
-        return;
-    }
-
-    if (!settingsTable->submitAll()) {
-        qDebug() << "Erro ao gravar alterações:" << settingsTable->lastError().text();
-    } else {
-        m_settingsEmpty = false;
-    }
-
+    m_criarTabelaSettings();
+    m_criarTabelaDados();
 }
