@@ -114,6 +114,7 @@ void SettingsWin::onSaveClicked()
     data.pass = lPass->text();
     data.topico = lTopic->text();
     data.maxData = sMaxData->value();
+
     emit settingsChanged(data);
     close();
 }

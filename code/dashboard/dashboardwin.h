@@ -15,6 +15,11 @@
 #include "../widgets/customlabel.h"
 #include "../widgets/custombutton.h"
 
+/**
+ * @brief DashboardWin
+ * Janela principal do programa.
+ * Plotar dados, abrir configurações, concetar etc.
+ */
 class DashboardWin : public QWidget
 {
     Q_OBJECT
@@ -39,6 +44,7 @@ public:
     CustomButton* bClearLog;
 
 protected:
+    //Forçar encerramento programa quando essa janela for fechada mesmo que ajam outras abertas.
     void closeEvent(QCloseEvent *event) override;
 
 private:

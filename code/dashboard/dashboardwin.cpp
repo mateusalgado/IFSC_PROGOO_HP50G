@@ -108,6 +108,7 @@ void DashboardWin::log(QString message)
 
 void DashboardWin::plotData(const QString &topic, const QString &time, const QString &raw)
 {
+    //Processa raw que é CSV
     QStringList parts = raw.split(",");
     if (parts.size() < 4)
         return;

@@ -32,6 +32,7 @@ qt_add_executable(Sema
     code/widgets/custombutton.h
     code/networking/netmanager.h code/networking/netmanager.cpp
 
+
 )
 
 target_link_libraries(Sema

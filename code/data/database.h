@@ -28,6 +28,7 @@ private:
     void m_criarTabelaDados();
 
     void m_setSetting(const QString &key, const QString &value);
+    bool m_saveData;
 public:
     Database();
     SettingsData getSettings();

@@ -8,8 +8,13 @@
 
 #include <QObject>
 
+/**
+ * @brief WinManager
+ * É responsável por gerênciar e conectar todas as janelas e o banco de dados através de signals e slots.
+ */
 class WinManager : QObject
 {
+    //Q_OBJECT necessário para signals e slots.
     Q_OBJECT
 
 public:

@@ -5,9 +5,6 @@
 
 # Projeto orientado a objeto
 
->[!NOTE]
->O **Projeto orientado a objeto** é composto pelas documentação do projeto descrito em UML. Deve incluir um Diagrama de Classes do sistema projetado, e pelo menos um diagrama de interação de um dos casos de uso. Outros diagramas podem ser apresentados, caso julgue necessário.
-
 O SEMA é um sistema desenvolvido em C++ que utiliza o framework QT e o protocolo de comunicação MQTT para gerenciar remotamente dados gerados por estações de monitoramento da qualidade da água.  
 
 # Diagrama de caso de uso
@@ -19,9 +16,6 @@ O SEMA é um sistema desenvolvido em C++ que utiliza o framework QT e o protocol
 <div align=center>
 <a href=./sema.md><img src="../img/classes.jpg" alt="classes"></a>
 </div>
-
-# Diagrama de interação
-[TODO]
 
 
 #  

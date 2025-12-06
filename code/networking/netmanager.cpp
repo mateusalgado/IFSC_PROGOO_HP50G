@@ -51,6 +51,7 @@ void NetManager::connectionRequest()
 
     if(cli->state() == QMqttClient::Disconnected)
     {
+        //EMQX requer conexão com TLS
         QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
         sslConfig.setPeerVerifyMode(QSslSocket::VerifyPeer);
         sslConfig.setProtocol(QSsl::TlsV1_2OrLater);

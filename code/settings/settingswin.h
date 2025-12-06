@@ -47,7 +47,6 @@ private slots:
     void onSaveClicked();
 
 private:
-
     void createButtons();
     void createInputs();
     void createLayout();

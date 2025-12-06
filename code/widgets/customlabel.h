@@ -83,9 +83,14 @@ public:
 
     void erase()
     {
-        m_lInfo = new QLabel(QString("-%1").arg(m_dataUnity));
+        m_lInfo->setText(QString("-%1").arg(m_dataUnity));
+
         if(list == nullptr) return;
         list->clear();
+
+        m_lInfo->update();
+        m_lTitle->update();
+
         update();
     }
 

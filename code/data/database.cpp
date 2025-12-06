@@ -95,6 +95,7 @@ void Database::saveSettings(const SettingsData &data)
     m_setSetting("pass", data.pass);
     m_setSetting("saveData", data.saveData ? "1" : "0");
     m_setSetting("maxData", QString::number(data.maxData));
+    m_saveData = data.saveData;
     m_settingsTable->select();
 }
 
@@ -152,6 +153,7 @@ SettingsData Database::getSettings()
     if (query.exec() && query.next()) {
         data.saveData = query.value(0).toString() == "1";
     }
+    m_saveData=data.saveData;
     return data;
 }
 
@@ -165,7 +167,7 @@ void Database::loadMessages()
     }
 
     QSqlQuery query;
-    query.prepare("SELECT time_stamp, topic, rawdata FROM dados ORDER BY time_stamp DESC LIMIT :max");
+    query.prepare("SELECT time_stamp, topic, rawdata FROM dados ORDER BY time_stamp DESC LIMIT :max"); //DESC para pegar os mais atuais
     query.bindValue(":max", QString::number(settings.maxData));
 
     struct MSG {
@@ -183,9 +185,9 @@ void Database::loadMessages()
                 query.value(1).toString(),
                 query.value(0).toString(),
                 query.value(2).toString()
-            });
+            }); //Inverte a ordem pois pegamos decrescentemente e temos que plotar crescentemente
 
-        for(auto& v : lista)
+        for(auto& v : lista) //Percorre a lista que agora é na ordem crescente
             emit loadedMessage(v.topico, v.time, v.raw);
     }
 }
@@ -214,6 +216,7 @@ void Database::eraseData()
 
 void Database::saveData(const QString &topic, const QString &time, const QString &raw)
 {
+    if(!m_saveData) return;
     if (!m_db.isOpen())
     {
         QMessageBox::warning(nullptr, "Erro ao abrir banco de dados", m_db.lastError().text());
