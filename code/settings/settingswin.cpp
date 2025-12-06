@@ -14,6 +14,8 @@ void SettingsWin::loadSettings(const SettingsData &data)
 {
     lAddr->setText(data.brokerAddr);
     lPort->setText(QString::number(data.brokerPort));
+    lUser->setText(data.username);
+    lPass->setText(data.pass);
     cSaveData->setChecked(data.saveData);
 }
 
@@ -31,6 +33,13 @@ void SettingsWin::createInputs()
     lPort =new QLineEdit();
     lPort->setValidator(new QIntValidator(0, 9999, this));
     lPort->setPlaceholderText("Porta Broker MQTT");
+
+    lUser = new QLineEdit();
+    lUser->setPlaceholderText("Usuário MQTT");
+
+    lPass = new QLineEdit();
+    lPass->setPlaceholderText("Senha MQTT");
+    lPass->setEchoMode(QLineEdit::Password);
 }
 
 void SettingsWin::createLayout()
@@ -39,6 +48,8 @@ void SettingsWin::createLayout()
 
     layout->addWidget(lAddr);
     layout->addWidget(lPort);
+    layout->addWidget(lUser);
+    layout->addWidget(lPass);
     layout->addWidget(cSaveData);
     layout->addWidget(bSave);
 
@@ -65,11 +76,25 @@ void SettingsWin::onSaveClicked()
         return;
     }
 
+
+    if (lUser->text().isEmpty()) {
+        QMessageBox::warning(this, "Usuário vazio",
+                             "Usuário não pode estar vazio.");
+        return;
+    }
+
+    if (lPass->text().isEmpty()) {
+        QMessageBox::warning(this, "Senha vazia",
+                             "Senha não pode estar vazia.");
+        return;
+    }
+
     SettingsData data;
     data.brokerAddr = lAddr->text();
     data.brokerPort = port;
     data.saveData   = cSaveData->isChecked();
-
+    data.username = lUser->text();
+    data.pass = lPass->text();
     emit settingsChanged(data);
     close();
 }

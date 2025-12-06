@@ -4,11 +4,14 @@
 #include "settings/settingswin.h"
 #include "dashboard/dashboardwin.h"
 #include "data/database.h"
+#include "networking/netmanager.h"
 
 #include <QObject>
 
-class WinManager
+class WinManager : QObject
 {
+    Q_OBJECT
+
 public:
     Database* database;
     WinManager();
@@ -22,6 +25,7 @@ public:
 private:
     SettingsWin* m_settingsWin;
     DashboardWin* m_dashboardWin;
+    NetManager* m_netManager;
 };
 
 #endif // WINMANAGER_H

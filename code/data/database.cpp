@@ -87,6 +87,8 @@ void Database::saveSettings(const SettingsData &data)
     m_setSetting("brokerAddr", data.brokerAddr);
     m_setSetting("brokerPort", QString::number(data.brokerPort));
     m_setSetting("saveData", data.saveData ? "1" : "0");
+    m_setSetting("username", data.username);
+    m_setSetting("pass", data.pass);
 
     m_settingsTable->select();
 }
@@ -96,8 +98,10 @@ SettingsData Database::getSettings()
     SettingsData data;
 
     data.brokerAddr = "";
-    data.brokerPort = 1883;   // porta MQTT default
+    data.brokerPort = 1;
     data.saveData   = false;
+    data.username = "";
+    data.pass = "";
 
     if (!m_db.isOpen())
     {
@@ -110,6 +114,16 @@ SettingsData Database::getSettings()
     query.prepare("SELECT value FROM settings WHERE key = 'brokerAddr'");
     if (query.exec() && query.next()) {
         data.brokerAddr = query.value(0).toString();
+    }
+
+    query.prepare("SELECT value FROM settings WHERE key = 'username'");
+    if (query.exec() && query.next()) {
+        data.username = query.value(0).toString();
+    }
+
+    query.prepare("SELECT value FROM settings WHERE key = 'pass'");
+    if (query.exec() && query.next()) {
+        data.pass = query.value(0).toString();
     }
 
     query.prepare("SELECT value FROM settings WHERE key = 'brokerPort'");

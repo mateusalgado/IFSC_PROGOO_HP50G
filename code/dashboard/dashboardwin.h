@@ -31,6 +31,8 @@ public:
 
     CustomButton* bSettings;
     CustomButton* bData;
+    CustomButton* bConnect;
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 
@@ -46,6 +48,7 @@ private:
     void createLabels();
     void createCharts();
     void createLayouts();
+
 signals:
 
 };

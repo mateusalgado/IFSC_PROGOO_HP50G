@@ -23,6 +23,7 @@ void DashboardWin::createButtons()
 {
     bSettings = new CustomButton(" Configurar", "://img/settings.png", 22, 22);
     bData = new CustomButton(" Exportar", "://img/database.png", 22, 22);
+    bConnect = new CustomButton(" Conectar", "://img/connection.png", 22, 22);
 }
 
 void DashboardWin::createLabels()
@@ -48,6 +49,7 @@ void DashboardWin::createLayouts()
 {
     //Layout para o botão de exportar e configurar
     m_buttonsLayout = new QVBoxLayout();
+    m_buttonsLayout->addWidget(bConnect);
     m_buttonsLayout->addWidget(bData);
     m_buttonsLayout->addWidget(bSettings);
     m_buttonsLayout->setAlignment(Qt::AlignBottom);

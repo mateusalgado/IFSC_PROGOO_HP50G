@@ -11,6 +11,8 @@
 
 struct SettingsData {
     QString brokerAddr;
+    QString username;
+    QString pass;
     int brokerPort;
     bool saveData;
 };
@@ -25,6 +27,10 @@ public:
 
     QLineEdit* lAddr;
     QLineEdit* lPort;
+
+    QLineEdit* lUser;
+    QLineEdit* lPass;
+
     QCheckBox* cSaveData;
 
     void loadSettings(const SettingsData& data);
