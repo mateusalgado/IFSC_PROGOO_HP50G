@@ -12,6 +12,8 @@
 #include <QMessageBox>
 #include <QObject>
 #include "../settings/settingswin.h"
+#include <QFile>
+#include <QFileDialog>
 
 class Database : public QObject
 {
@@ -31,6 +33,10 @@ public:
     SettingsData getSettings();
 
 public slots:
+    void eraseData();
+    void exportData();
+
+    void saveData(const QString &topic, const QString &time, const QString &raw);
     void saveSettings(const SettingsData& data);
 };
 

@@ -8,6 +8,7 @@
 #include <QSize>
 #include <QApplication>
 #include <QTextEdit>
+#include <QStringList>
 
 #include "../widgets/customchart.h"
 #include "../widgets/customlabel.h"
@@ -32,6 +33,7 @@ public:
 
     CustomButton* bSettings;
     CustomButton* bData;
+    CustomButton* bEraseData;
     CustomButton* bConnect;
     CustomButton* bClearLog;
 
@@ -53,6 +55,7 @@ private:
 
 public slots:
     void log(QString messaage);
+    void plotData(const QString &topic, const QString &time, const QString &raw);
 
 signals:
 

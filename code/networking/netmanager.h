@@ -27,6 +27,7 @@ public slots:
     void updateSettings(const SettingsData& data);
 signals:
     void log(QString message);
+    void message(const QString &topic, const QString &time, const QString &raw);
     void connected();
     void disconnected();
     void errorChanged();

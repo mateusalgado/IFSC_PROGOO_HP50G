@@ -41,15 +41,15 @@ void Database::m_criarTabelaDados()
 {
     QSqlQuery query;
 
-    if (!query.exec("CREATE TABLE IF NOT EXISTS data ("
+    if (!query.exec("CREATE TABLE IF NOT EXISTS dados ("
                     "time_stamp TEXT, "
-                    "station_name TEXT, "
-                    "data TEXT)"))
-    QMessageBox::warning(nullptr, "Erro ao criar tabela data", query.lastError().text());
+                    "topic TEXT, "
+                    "rawdata TEXT)"))
+    QMessageBox::warning(nullptr, "Erro ao criar tabela dados", query.lastError().text());
 
 
     m_dataTable= new QSqlTableModel();
-    m_dataTable->setTable("data");
+    m_dataTable->setTable("dados");
     m_dataTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
     m_dataTable->select();
 
@@ -147,4 +147,93 @@ SettingsData Database::getSettings()
         data.saveData = query.value(0).toString() == "1";
     }
     return data;
+}
+
+void Database::eraseData()
+{
+    if (!m_db.isOpen())
+    {
+        QMessageBox::warning(nullptr, "Erro ao limpar dados", "O banco de dados não está aberto.");
+        return;
+    }
+
+    auto res = QMessageBox::question(nullptr, "Banco de dados", "Deseja apagar TODOS os dados salvos?", QMessageBox::Yes | QMessageBox::No);
+    if(res == QMessageBox::No)
+        return;
+
+    QSqlQuery query;
+    if (query.exec("DELETE FROM dados")) {
+        m_dataTable->select();
+        QMessageBox::information(nullptr, "Banco de dados", "Todos os dados foram apagados");
+    } else {
+        QMessageBox::warning(nullptr, "Erro ao limpar dados", query.lastError().text());
+    }
+}
+
+void Database::saveData(const QString &topic, const QString &time, const QString &raw)
+{
+    if (!m_db.isOpen())
+    {
+        QMessageBox::warning(nullptr, "Erro ao abrir banco de dados", m_db.lastError().text());
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO dados (time_stamp, topic, rawdata) VALUES (:times, :topic, :rawd)");
+    query.bindValue(":times", time);
+    query.bindValue(":topic", topic);
+    query.bindValue(":rawd", raw);
+
+    if (!query.exec() || query.numRowsAffected() == 0) {
+        QMessageBox::warning(nullptr, "Erro ao gravar dados no banco de dados", query.lastError().text());
+    }
+}
+
+void Database::exportData()
+{
+    if (!m_db.isOpen())
+    {
+        QMessageBox::warning(nullptr, "Erro ao exportar dados", "O banco de dados não está aberto");
+        return;
+    }
+
+    QString filePath = QFileDialog::getSaveFileName(nullptr,
+        tr("Exportar Dados"),
+        QDir::homePath(),
+        tr("Arquivos CSV (*.csv);;Todos os Arquivos (*)")
+    );
+
+    if (filePath.isEmpty() || filePath.isNull()) return;
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::warning(nullptr, "Erro ao exportar dados",
+                             QString("Não foi possível abrir o arquivo para escrita: %1").arg(file.errorString()));
+        return;
+    }
+
+    QTextStream out(&file);
+    QSqlQuery query;
+
+    if (!query.exec("SELECT time_stamp, topic, rawdata FROM dados ORDER BY time_stamp ASC")) {
+        QMessageBox::warning(nullptr, "Erro ao consultar dados para exportação", query.lastError().text());
+        file.close();
+        return;
+    }
+
+    out << "Time_Stamp;Topic;RawData\n";
+    int rowCount = 0;
+    while (query.next()) {
+        QString time_stamp = query.value(0).toString();
+        QString topic = query.value(1).toString();
+        QString rawdata = query.value(2).toString();
+
+        rawdata.replace('\n', ' ').replace('\r', ' ');
+        out << time_stamp << ";" << topic << ";" << rawdata << "\n";
+        rowCount++;
+    }
+
+    file.close();
+    QMessageBox::information(nullptr, "Banco de dados", "Todos os dados foram exportados");
+    return;
 }

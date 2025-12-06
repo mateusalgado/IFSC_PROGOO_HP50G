@@ -23,6 +23,7 @@ void DashboardWin::createButtons()
 {
     bSettings = new CustomButton(" Configurar", "://img/settings.png", 22, 22);
     bData = new CustomButton(" Exportar", "://img/database.png", 22, 22);
+    bEraseData = new CustomButton(" Apagar TUDO", "://img/erase.png", 22, 22);
     bConnect = new CustomButton(" Conectar", "://img/connection.png", 22, 22);
     bClearLog = new CustomButton(" Limpar Log", "://img/clear.png", 22, 22);
 
@@ -51,10 +52,10 @@ void DashboardWin::createLabels()
 
 void DashboardWin::createCharts()
 {
-    cAirTemp = new CustomChart();
-    cAirHum = new CustomChart();
-    cWaterTemp = new CustomChart();
-    cUV = new CustomChart();
+    cAirTemp = new CustomChart("Temperatura Atmo", 0, 45, 10);
+    cAirHum = new CustomChart("Umidade do Ar", 0, 100, 10);
+    cWaterTemp = new CustomChart("Temperatura da Água", -10, 100, 10);
+    cUV = new CustomChart("Índice UV", 0, 10, 10);
 }
 
 void DashboardWin::createLayouts()
@@ -66,6 +67,7 @@ void DashboardWin::createLayouts()
     m_buttonsLayout->addWidget(bSettings);
     m_buttonsLayout->addWidget(lLog);
     m_buttonsLayout->addWidget(bClearLog);
+    m_buttonsLayout->addWidget(bEraseData);
     m_buttonsLayout->setAlignment(Qt::AlignBottom);
 
     //Layout para os dados médios e botões
@@ -102,4 +104,26 @@ void DashboardWin::createLayouts()
 void DashboardWin::log(QString message)
 {
     lLog->append(message);
+}
+
+void DashboardWin::plotData(const QString &topic, const QString &time, const QString &raw)
+{
+    QStringList parts = raw.split(",");
+    if (parts.size() < 4)
+        return;
+
+    float airHum     = parts[0].toFloat();
+    float airTemp    = parts[1].toFloat();
+    float waterTemp  = parts[2].toFloat();
+    float uv         = parts[3].toFloat();
+
+#ifdef QT_DEBUG
+    QString msg = "(" +time + ") " + topic + ": " + raw;
+    log(msg);
+#endif
+
+    cAirHum->plotar(time, airHum);
+    cAirTemp->plotar(time, airTemp);
+    cWaterTemp->plotar(time, waterTemp);
+    cUV->plotar(time, uv);
 }

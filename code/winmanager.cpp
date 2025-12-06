@@ -33,6 +33,7 @@ void WinManager::showDataExport()
 void WinManager::createSignals()
 {
     connect(m_dashboardWin->bSettings, &CustomButton::clicked, m_settingsWin, &QWidget::show);
+
     connect(m_dashboardWin->bConnect, &CustomButton::clicked, this, [this](){
         m_dashboardWin->bConnect->setDisabled(true);
         m_netManager->connectionRequest();
@@ -59,4 +60,9 @@ void WinManager::createSignals()
     });
 
     connect(m_netManager, &NetManager::log, m_dashboardWin, &DashboardWin::log);
+    connect(m_netManager, &NetManager::message, database, &Database::saveData);
+    connect(m_netManager, &NetManager::message, m_dashboardWin, &DashboardWin::plotData);
+
+    connect(m_dashboardWin->bData, &CustomButton::clicked, database, &Database::exportData);
+    connect(m_dashboardWin->bEraseData, &CustomButton::clicked, database, &Database::eraseData);
 }

@@ -31,16 +31,13 @@ NetManager::NetManager(QObject *parent)
 }
 
 
-void NetManager::proccessMessage(const QByteArray &message,
+void NetManager::proccessMessage(const QByteArray &rawMessage,
                                  const QMqttTopicName &topic)
 {
-    QString payload = QString::fromUtf8(message);
+    QString raw = QString::fromUtf8(rawMessage);
+    QString time = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
 
-    QString content = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")
-                      + " Message: " + payload + "\n"
-                      + "Topic: " + topic.name();
-
-    QMessageBox::information(nullptr, "MQTT Message", content);
+    emit message(topic.name(), time, raw);
 }
 
 void NetManager::connectionRequest()
