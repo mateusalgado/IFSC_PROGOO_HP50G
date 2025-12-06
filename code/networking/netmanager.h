@@ -26,8 +26,10 @@ public slots:
     void connectionRequest();
     void updateSettings(const SettingsData& data);
 signals:
+    void log(QString message);
     void connected();
     void disconnected();
+    void errorChanged();
 };
 
 #endif // NETMANAGER_H

@@ -14,6 +14,7 @@ void SettingsWin::loadSettings(const SettingsData &data)
 {
     lAddr->setText(data.brokerAddr);
     lPort->setText(QString::number(data.brokerPort));
+    lTopic->setText(data.topico);
     lUser->setText(data.username);
     lPass->setText(data.pass);
     cSaveData->setChecked(data.saveData);
@@ -34,6 +35,9 @@ void SettingsWin::createInputs()
     lPort->setValidator(new QIntValidator(0, 9999, this));
     lPort->setPlaceholderText("Porta Broker MQTT");
 
+    lTopic = new QLineEdit();
+    lTopic->setPlaceholderText("Tópico MQTT");
+
     lUser = new QLineEdit();
     lUser->setPlaceholderText("Usuário MQTT");
 
@@ -48,6 +52,7 @@ void SettingsWin::createLayout()
 
     layout->addWidget(lAddr);
     layout->addWidget(lPort);
+    layout->addWidget(lTopic);
     layout->addWidget(lUser);
     layout->addWidget(lPass);
     layout->addWidget(cSaveData);
@@ -76,6 +81,11 @@ void SettingsWin::onSaveClicked()
         return;
     }
 
+    if (lTopic->text().isEmpty()) {
+        QMessageBox::warning(this, "Tópico vazio",
+                             "Tópico não pode estar vazio.");
+        return;
+    }
 
     if (lUser->text().isEmpty()) {
         QMessageBox::warning(this, "Usuário vazio",
@@ -95,6 +105,7 @@ void SettingsWin::onSaveClicked()
     data.saveData   = cSaveData->isChecked();
     data.username = lUser->text();
     data.pass = lPass->text();
+    data.topico = lTopic->text();
     emit settingsChanged(data);
     close();
 }

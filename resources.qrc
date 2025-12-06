@@ -6,5 +6,6 @@
         <file>img/save.png</file>
         <file>img/sema.png</file>
         <file>img/sema.ico</file>
+        <file>img/clear.png</file>
     </qresource>
 </RCC>

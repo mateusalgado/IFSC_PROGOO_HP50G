@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QSize>
 #include <QApplication>
+#include <QTextEdit>
 
 #include "../widgets/customchart.h"
 #include "../widgets/customlabel.h"
@@ -18,11 +19,11 @@ class DashboardWin : public QWidget
 public:
     explicit DashboardWin(QWidget *parent = nullptr);
 
-    CustomLabel<int>* lOnlineCount;
     CustomLabel<float>* lAvgAirTemp;
     CustomLabel<float>* lAvgAirHum;
     CustomLabel<float>* lAvgWaterTemp;
     CustomLabel<int>* lAvgUV;
+    QTextEdit* lLog;
 
     CustomChart* cAirTemp;
     CustomChart* cAirHum;
@@ -32,6 +33,7 @@ public:
     CustomButton* bSettings;
     CustomButton* bData;
     CustomButton* bConnect;
+    CustomButton* bClearLog;
 
 protected:
     void closeEvent(QCloseEvent *event) override;
@@ -48,6 +50,9 @@ private:
     void createLabels();
     void createCharts();
     void createLayouts();
+
+public slots:
+    void log(QString messaage);
 
 signals:
 

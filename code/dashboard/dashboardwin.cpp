@@ -3,8 +3,8 @@
 DashboardWin::DashboardWin(QWidget *parent)
     : QWidget{parent}
 {
-    createLabels();
     createButtons();
+    createLabels();
     createCharts();
     createLayouts();
 
@@ -24,12 +24,24 @@ void DashboardWin::createButtons()
     bSettings = new CustomButton(" Configurar", "://img/settings.png", 22, 22);
     bData = new CustomButton(" Exportar", "://img/database.png", 22, 22);
     bConnect = new CustomButton(" Conectar", "://img/connection.png", 22, 22);
+    bClearLog = new CustomButton(" Limpar Log", "://img/clear.png", 22, 22);
+
+    connect(bClearLog, &QPushButton::clicked, this, [this](){
+        lLog->clear();
+    });
 }
 
 void DashboardWin::createLabels()
 {
-    lOnlineCount = new CustomLabel<int>("Estações conectadas", "");
-    lOnlineCount->setData(0);
+    lLog = new QTextEdit();
+    int lines = 4;
+    int lineHeight = QFontMetrics(lLog->font()).height();
+    int charWidth = QFontMetrics(lLog->font()).horizontalAdvance("W");
+    int linesWidth = 20 * charWidth;
+    lLog->setFixedWidth(linesWidth);
+    lLog->setFixedHeight(lines * lineHeight + 12);
+    lLog->setReadOnly(true);
+    lLog->setPlaceholderText("Log");
 
     lAvgAirHum = new CustomLabel<float>("Umidade média", "%");
     lAvgAirTemp = new CustomLabel<float>("Temp. Ar média", "°C");
@@ -52,11 +64,12 @@ void DashboardWin::createLayouts()
     m_buttonsLayout->addWidget(bConnect);
     m_buttonsLayout->addWidget(bData);
     m_buttonsLayout->addWidget(bSettings);
+    m_buttonsLayout->addWidget(lLog);
+    m_buttonsLayout->addWidget(bClearLog);
     m_buttonsLayout->setAlignment(Qt::AlignBottom);
 
     //Layout para os dados médios e botões
     m_labelsLayout = new QVBoxLayout();
-    m_labelsLayout->addWidget(lOnlineCount);
     m_labelsLayout->addWidget(lAvgAirHum);
     m_labelsLayout->addWidget(lAvgAirTemp);
     m_labelsLayout->addWidget(lAvgUV);
@@ -84,5 +97,9 @@ void DashboardWin::createLayouts()
     m_dataLayout->addLayout(m_chartsLayout);
     m_dataLayout->setAlignment(Qt::AlignCenter | Qt::AlignHCenter | Qt::AlignVCenter);
     this->setLayout(m_dataLayout);
+}
 
+void DashboardWin::log(QString message)
+{
+    lLog->append(message);
 }

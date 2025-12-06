@@ -48,8 +48,15 @@ void WinManager::createSignals()
         m_dashboardWin->bConnect->setText("Disconectar");
     });
 
+    connect(m_netManager, &NetManager::errorChanged, this, [this](){
+        m_dashboardWin->bConnect->setEnabled(true);
+        m_dashboardWin->bConnect->setText("Conectar");
+    });
+
     connect(m_netManager, &NetManager::disconnected, this, [this](){
         m_dashboardWin->bConnect->setEnabled(true);
         m_dashboardWin->bConnect->setText("Conectar");
     });
+
+    connect(m_netManager, &NetManager::log, m_dashboardWin, &DashboardWin::log);
 }

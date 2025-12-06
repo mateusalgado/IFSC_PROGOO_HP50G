@@ -28,11 +28,13 @@ void Database::m_criarTabelaSettings()
     m_settingsTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
     m_settingsTable->select();
 
+#ifdef QT_DEBUG
     QTableView *settingsView = new QTableView;
     settingsView->setModel(m_settingsTable);
     settingsView->setWindowTitle("Tabela Settings");
     settingsView->setWindowIcon(QIcon("://img/settings.png"));
     settingsView->show();
+#endif
 }
 
 void Database::m_criarTabelaDados()
@@ -51,11 +53,13 @@ void Database::m_criarTabelaDados()
     m_dataTable->setEditStrategy(QSqlTableModel::OnManualSubmit);
     m_dataTable->select();
 
+#ifdef QT_DEBUG
     QTableView *dataView = new QTableView;
     dataView->setModel(m_dataTable);
     dataView->setWindowTitle("Tabela Dados");
     dataView->setWindowIcon(QIcon("://img/database.png"));
     dataView->show();
+#endif
 }
 
 void Database::m_setSetting(const QString &key, const QString &value)
@@ -86,9 +90,10 @@ void Database::saveSettings(const SettingsData &data)
     }
     m_setSetting("brokerAddr", data.brokerAddr);
     m_setSetting("brokerPort", QString::number(data.brokerPort));
-    m_setSetting("saveData", data.saveData ? "1" : "0");
+    m_setSetting("mqttTopic", data.topico);
     m_setSetting("username", data.username);
     m_setSetting("pass", data.pass);
+    m_setSetting("saveData", data.saveData ? "1" : "0");
 
     m_settingsTable->select();
 }
@@ -101,6 +106,7 @@ SettingsData Database::getSettings()
     data.brokerPort = 1;
     data.saveData   = false;
     data.username = "";
+    data.topico = "";
     data.pass = "";
 
     if (!m_db.isOpen())
@@ -121,6 +127,11 @@ SettingsData Database::getSettings()
         data.username = query.value(0).toString();
     }
 
+    query.prepare("SELECT value FROM settings WHERE key = 'mqttTopic'");
+    if (query.exec() && query.next()) {
+        data.topico = query.value(0).toString();
+    }
+
     query.prepare("SELECT value FROM settings WHERE key = 'pass'");
     if (query.exec() && query.next()) {
         data.pass = query.value(0).toString();
@@ -135,6 +146,5 @@ SettingsData Database::getSettings()
     if (query.exec() && query.next()) {
         data.saveData = query.value(0).toString() == "1";
     }
-
     return data;
 }

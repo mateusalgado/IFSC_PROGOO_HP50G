@@ -10,20 +10,22 @@ NetManager::NetManager(QObject *parent)
             this, &NetManager::proccessMessage);
 
     connect(cli, &QMqttClient::stateChanged, this, [this](QMqttClient::ClientState s){
-        qDebug() << "MQTT State:" << s;
+        emit log("MQTT State changed: " + QString::number(s));
     });
 
     connect(cli, &QMqttClient::errorChanged, this, [this](QMqttClient::ClientError e){
-        qDebug() << "MQTT Error:" << e;
+        emit log("MQTT Error changed: " + QString::number(e));
+        emit errorChanged();
     });
 
     connect(cli, &QMqttClient::connected, this, [this](){
-        qDebug() << "MQTT: Connected!";
+        emit log("MQTT conectado.");
+        cli->subscribe(QMqttTopicFilter(m_settingsData.topico));
         emit connected();
     });
 
     connect(cli, &QMqttClient::disconnected, this, [this](){
-        qDebug() << "MQTT: Disconnected!";
+        emit log("MQTT disconectado.");
         emit disconnected();
     });
 }
@@ -63,8 +65,13 @@ void NetManager::connectionRequest()
 void NetManager::updateSettings(const SettingsData& data)
 {
     m_settingsData = data;
+    if(cli == nullptr) return;
+
     cli->setUsername(m_settingsData.username);
     cli->setPassword(m_settingsData.pass);
     cli->setHostname(m_settingsData.brokerAddr);
     cli->setPort(static_cast<quint16>(m_settingsData.brokerPort));
+
+    if(cli->state() == QMqttClient::Connected)
+        cli->subscribe(QMqttTopicFilter(m_settingsData.topico));
 }
