@@ -94,7 +94,7 @@ void Database::saveSettings(const SettingsData &data)
     m_setSetting("username", data.username);
     m_setSetting("pass", data.pass);
     m_setSetting("saveData", data.saveData ? "1" : "0");
-
+    m_setSetting("maxData", QString::number(data.maxData));
     m_settingsTable->select();
 }
 
@@ -103,11 +103,12 @@ SettingsData Database::getSettings()
     SettingsData data;
 
     data.brokerAddr = "";
-    data.brokerPort = 1;
+    data.brokerPort = -1;
     data.saveData   = false;
     data.username = "";
     data.topico = "";
     data.pass = "";
+    data.maxData = 30;
 
     if (!m_db.isOpen())
     {
@@ -142,11 +143,51 @@ SettingsData Database::getSettings()
         data.brokerPort = query.value(0).toInt();
     }
 
+    query.prepare("SELECT value FROM settings WHERE key = 'maxData'");
+    if (query.exec() && query.next()) {
+        data.maxData = query.value(0).toInt();
+    }
+
     query.prepare("SELECT value FROM settings WHERE key = 'saveData'");
     if (query.exec() && query.next()) {
         data.saveData = query.value(0).toString() == "1";
     }
     return data;
+}
+
+void Database::loadMessages()
+{
+    auto settings = getSettings();
+    if (!m_db.isOpen())
+    {
+        QMessageBox::warning(nullptr, "Erro ao abrir banco de dados", m_db.lastError().text());
+        return;
+    }
+
+    QSqlQuery query;
+    query.prepare("SELECT time_stamp, topic, rawdata FROM dados ORDER BY time_stamp DESC LIMIT :max");
+    query.bindValue(":max", QString::number(settings.maxData));
+
+    struct MSG {
+        QString topico;
+        QString time;
+        QString raw;
+    };
+
+    QList<MSG> lista;
+
+    if (query.exec())
+    {
+        while (query.next())
+            lista.push_front({
+                query.value(1).toString(),
+                query.value(0).toString(),
+                query.value(2).toString()
+            });
+
+        for(auto& v : lista)
+            emit loadedMessage(v.topico, v.time, v.raw);
+    }
 }
 
 void Database::eraseData()
@@ -164,6 +205,7 @@ void Database::eraseData()
     QSqlQuery query;
     if (query.exec("DELETE FROM dados")) {
         m_dataTable->select();
+        emit erased();
         QMessageBox::information(nullptr, "Banco de dados", "Todos os dados foram apagados");
     } else {
         QMessageBox::warning(nullptr, "Erro ao limpar dados", query.lastError().text());

@@ -9,6 +9,7 @@
 #include <QApplication>
 #include <QTextEdit>
 #include <QStringList>
+#include <QMessageBox>
 
 #include "../widgets/customchart.h"
 #include "../widgets/customlabel.h"
@@ -20,10 +21,10 @@ class DashboardWin : public QWidget
 public:
     explicit DashboardWin(QWidget *parent = nullptr);
 
-    CustomLabel<float>* lAvgAirTemp;
-    CustomLabel<float>* lAvgAirHum;
-    CustomLabel<float>* lAvgWaterTemp;
-    CustomLabel<int>* lAvgUV;
+    CustomLabel* lAvgAirTemp;
+    CustomLabel* lAvgAirHum;
+    CustomLabel* lAvgWaterTemp;
+    CustomLabel* lAvgUV;
     QTextEdit* lLog;
 
     CustomChart* cAirTemp;
@@ -56,7 +57,8 @@ private:
 public slots:
     void log(QString messaage);
     void plotData(const QString &topic, const QString &time, const QString &raw);
-
+    void updateMaxData(const long& maxData);
+    void erase();
 signals:
 
 };

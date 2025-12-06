@@ -32,6 +32,11 @@ public:
     Database();
     SettingsData getSettings();
 
+    void loadMessages();
+signals:
+    void loadedMessage(const QString &topic, const QString &time, const QString &raw);
+    void erased();
+
 public slots:
     void eraseData();
     void exportData();

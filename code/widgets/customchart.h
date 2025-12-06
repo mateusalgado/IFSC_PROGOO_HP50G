@@ -61,6 +61,19 @@ public:
         view->update();
     }
 
+    void updateMaxData(const long& max)
+    {
+        m_maxData = max;
+    }
+
+    void erase()
+    {
+        serie->clear();
+        ay->applyNiceNumbers();
+        chart->update();
+        view->update();
+    }
+
 private:
     void defaults(const QString& Title, QVariant minY, QVariant maxY, long maxData)
     {

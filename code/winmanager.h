@@ -18,7 +18,6 @@ public:
 
     void showSettings();
     void showDashboard();
-    void showDataExport();
 
     void createSignals();
 

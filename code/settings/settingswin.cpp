@@ -18,6 +18,7 @@ void SettingsWin::loadSettings(const SettingsData &data)
     lUser->setText(data.username);
     lPass->setText(data.pass);
     cSaveData->setChecked(data.saveData);
+    sMaxData->setValue(data.maxData);
 }
 
 void SettingsWin::createButtons()
@@ -44,6 +45,11 @@ void SettingsWin::createInputs()
     lPass = new QLineEdit();
     lPass->setPlaceholderText("Senha MQTT");
     lPass->setEchoMode(QLineEdit::Password);
+
+    sMaxData = new QSpinBox();
+    sMaxData->setMinimum(0);
+    sMaxData->setValue(0);
+    sMaxData->setSpecialValueText("Máximo dados cache");
 }
 
 void SettingsWin::createLayout()
@@ -55,6 +61,7 @@ void SettingsWin::createLayout()
     layout->addWidget(lTopic);
     layout->addWidget(lUser);
     layout->addWidget(lPass);
+    layout->addWidget(sMaxData);
     layout->addWidget(cSaveData);
     layout->addWidget(bSave);
 
@@ -106,6 +113,7 @@ void SettingsWin::onSaveClicked()
     data.username = lUser->text();
     data.pass = lPass->text();
     data.topico = lTopic->text();
+    data.maxData = sMaxData->value();
     emit settingsChanged(data);
     close();
 }

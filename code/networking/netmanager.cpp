@@ -30,7 +30,6 @@ NetManager::NetManager(QObject *parent)
     });
 }
 
-
 void NetManager::proccessMessage(const QByteArray &rawMessage,
                                  const QMqttTopicName &topic)
 {

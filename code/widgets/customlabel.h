@@ -9,8 +9,8 @@
 #include <QBoxLayout>
 #include <QVariant>
 #include <QIcon>
+#include <QList>
 
-template<typename T>
 class CustomLabel : public QWidget
 {
 private:
@@ -20,12 +20,12 @@ private:
 
     QString m_dataUnity;
 
-    T m_data;
-    bool m_hasReceivedData;
-
     QIcon* icon;
+    QList<QVariant>* list;
+
+    long m_maxValues;
 public:
-    explicit CustomLabel(QString title, QString iconPath, int iconW, int iconH, QBoxLayout::Direction direction,  bool vertical = false, QWidget *parent = nullptr)
+    explicit CustomLabel(QString title, QString iconPath, int iconW, int iconH, QBoxLayout::Direction direction, bool vertical = false, QWidget *parent = nullptr)
     {
         m_lTitle = new QLabel(title);
 
@@ -51,12 +51,13 @@ public:
         m_layout = new QHBoxLayout();
         m_layout->addWidget(m_lTitle);
         this->setLayout(m_layout);
+
     }
 
-    explicit CustomLabel(QString title, QString dataUnity, bool vertical = true, QWidget *parent = nullptr)
+    explicit CustomLabel(QString title, QString dataUnity, long maxValues, bool vertical = true, QWidget *parent = nullptr)
     {
-        m_hasReceivedData = false;
         m_dataUnity = dataUnity;
+        m_maxValues = maxValues;
 
         m_lTitle = new QLabel(title);
         m_lInfo = new QLabel(QString("-%1").arg(m_dataUnity));
@@ -72,25 +73,56 @@ public:
         this->setContentsMargins(0,0,0,0);
         this->setLayout(m_layout);
 
+        list = new QList<QVariant>();
+    }
+
+    void updateMaxData(const long& max)
+    {
+        m_maxValues = max;
+    }
+
+    void erase()
+    {
+        m_lInfo = new QLabel(QString("-%1").arg(m_dataUnity));
+        if(list == nullptr) return;
+        list->clear();
+        update();
     }
 
 public slots:
-    void setData(T newData)
+    void pushData(QVariant data)
     {
-        m_data = newData;
-        m_hasReceivedData = true;
+        if(list == nullptr) return;
+        list->append(data);
+        while (list->count() > m_maxValues)
+        {
+            list->removeFirst();
+        }
 
-        QVariant v;
-        v.setValue(newData);
+        double sum = 0.0;
+        int valid_count = 0;
 
-        if(m_lInfo != nullptr)
-            if(!m_dataUnity.isNull())
-                this->m_lInfo->setText(QString("%1%2").arg(v.toString(), m_dataUnity));
-    }
+        for (auto& v : *list)
+        {
+            bool ok = false;
+            double value = v.toDouble(&ok);
 
-    T getData()
-    {
-        return this->m_data;
+            if (ok)
+            {
+                sum += value;
+                valid_count++;
+            }
+        }
+        double average = 0.0;
+        if (valid_count > 0)
+            average = sum / valid_count;
+
+
+        if(m_lInfo != nullptr && !m_dataUnity.isNull())
+        {
+            QString avgString = QString::number(average, 'f', 2);
+            this->m_lInfo->setText(QString("%1%2").arg(avgString, m_dataUnity));
+        }
     }
 signals:
 };

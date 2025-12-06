@@ -8,7 +8,7 @@ DashboardWin::DashboardWin(QWidget *parent)
     createCharts();
     createLayouts();
 
-    resize(800, 600);
+    resize(1100, 700);
 
     setWindowIcon(QIcon("://img/sema.png"));
 }
@@ -44,18 +44,18 @@ void DashboardWin::createLabels()
     lLog->setReadOnly(true);
     lLog->setPlaceholderText("Log");
 
-    lAvgAirHum = new CustomLabel<float>("Umidade média", "%");
-    lAvgAirTemp = new CustomLabel<float>("Temp. Ar média", "°C");
-    lAvgWaterTemp = new CustomLabel<float>("Temp. Água média", "°C");
-    lAvgUV = new CustomLabel<int>("Índice UV médio", "°C");
+    lAvgAirHum = new CustomLabel("Umidade média", "%", 0);
+    lAvgAirTemp = new CustomLabel("Temp. Ar média", "°C", 0);
+    lAvgWaterTemp = new CustomLabel("Temp. Água média", "°C", 0);
+    lAvgUV = new CustomLabel("Índice UV médio", "°C", 0);
 }
 
 void DashboardWin::createCharts()
 {
-    cAirTemp = new CustomChart("Temperatura Atmo", 0, 45, 10);
-    cAirHum = new CustomChart("Umidade do Ar", 0, 100, 10);
-    cWaterTemp = new CustomChart("Temperatura da Água", -10, 100, 10);
-    cUV = new CustomChart("Índice UV", 0, 10, 10);
+    cAirTemp = new CustomChart("Temperatura Atmo", 0, 45, 0);
+    cAirHum = new CustomChart("Umidade do Ar", 0, 100, 0);
+    cWaterTemp = new CustomChart("Temperatura da Água", -10, 100, 0);
+    cUV = new CustomChart("Índice UV", 0, 10, 0);
 }
 
 void DashboardWin::createLayouts()
@@ -120,10 +120,40 @@ void DashboardWin::plotData(const QString &topic, const QString &time, const QSt
 #ifdef QT_DEBUG
     QString msg = "(" +time + ") " + topic + ": " + raw;
     log(msg);
+    qDebug() << msg;
 #endif
 
     cAirHum->plotar(time, airHum);
     cAirTemp->plotar(time, airTemp);
     cWaterTemp->plotar(time, waterTemp);
     cUV->plotar(time, uv);
+
+    lAvgAirHum->pushData(airHum);
+    lAvgAirTemp->pushData(airTemp);
+    lAvgWaterTemp->pushData(waterTemp);
+    lAvgUV->pushData(uv);
+}
+
+void DashboardWin::updateMaxData(const long &maxData)
+{
+    lAvgAirTemp->updateMaxData(maxData);
+    lAvgAirHum->updateMaxData(maxData);
+    lAvgWaterTemp->updateMaxData(maxData);
+    lAvgUV->updateMaxData(maxData);
+    cAirTemp->updateMaxData(maxData);
+    cAirHum->updateMaxData(maxData);
+    cWaterTemp->updateMaxData(maxData);
+    cUV->updateMaxData(maxData);
+}
+
+void DashboardWin::erase()
+{
+    lAvgAirTemp->erase();
+    lAvgAirHum->erase();
+    lAvgWaterTemp->erase();
+    lAvgUV->erase();
+    cAirTemp->erase();
+    cAirHum->erase();
+    cWaterTemp->erase();
+    cUV->erase();
 }

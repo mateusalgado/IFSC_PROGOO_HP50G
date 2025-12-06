@@ -8,6 +8,7 @@
 #include <QCheckBox>
 #include <QMessageBox>
 #include "../widgets/custombutton.h"
+#include <QSpinBox>
 
 struct SettingsData {
     QString brokerAddr;
@@ -16,6 +17,7 @@ struct SettingsData {
     QString topico;
     int brokerPort;
     bool saveData;
+    long maxData;
 };
 
 class SettingsWin : public QWidget
@@ -32,6 +34,7 @@ public:
 
     QLineEdit* lUser;
     QLineEdit* lPass;
+    QSpinBox* sMaxData;
 
     QCheckBox* cSaveData;
 
