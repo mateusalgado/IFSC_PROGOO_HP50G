@@ -17,7 +17,13 @@ Construir um clone didático da calculadora HP 50g usando C++ com Qt, com foco e
 
 - modelagem orientada a objetos de componentes de hardware (LCD, teclado, teclas e controlador);
 - interface visual inspirada na HP 50g (visão superior, ordem de teclas e cores semelhantes);
-- comportamento funcional inicial compatível com o manual da HP 50g, incluindo modo ALG e modo RPN.
+- comportamento de **aplicação**: telas, botões, menus soft, modos visíveis e funções de uso comum (ALG/RPN, cálculos básicos, STO/RCL simples), guiado pelo manual como **referência de interface e fluxo**, sem reproduzir o firmware nem um motor de objetos/CAS/RPL da calculadora real.
+
+## Fora de escopo (deliberado)
+
+- **E-KERNEL** / pilha de objetos HP completos (tipos internos, CAS, RPL, diretórios, flags de sistema).
+- Paridade profunda com todos os capítulos avançados do manual (matrizes simbólicas, EDO, estatística completa, etc.).
+- O objetivo é **Qt + experiência de uso** sem substituir uma HP50g física.
 
 ## Escopo da primeira entrega (V1)
 
@@ -38,10 +44,14 @@ O comportamento do sistema será guiado pelo `manual.pdf`, principalmente:
 
 ## Roadmap de desenvolvimento
 
-1. **Análise OO:** domínio, requisitos, casos de uso e diagrama de domínio.
-2. **Projeto OO:** diagrama de classes e diagrama de sequência.
-3. **Implementação Qt/C++:** interface, componentes OO e motor de cálculo inicial.
-4. **Testes:** validação de cenários ALG, RPN, transição de modo e edição.
+1. **Análise OO:** domínio, requisitos, casos de uso e diagrama de domínio (foco em UI e fluxos de aplicação).
+2. **Projeto OO:** diagrama de classes e sequência (componentes visuais + controlador + modelo “leve”).
+3. **Implementação Qt/C++:** interface fiel, teclas, menus e cálculo demonstrável.
+4. **Testes:** cenários de uso visível (menus, modos, expressões típicas).
+
+## Fora de escopo
+
+Motor de objetos HP (E-KERNEL), CAS/RPL completos e paridade com firmware — ver [code/docs/BACKLOG_IMPLEMENTACAO.md](code/docs/BACKLOG_IMPLEMENTACAO.md).
 
 ## Estrutura do repositório
 
